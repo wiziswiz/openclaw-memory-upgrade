@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "description": "Memory upgrade patterns file - stores relationships and behavioral sequences",
+  "created": "2026-02-13T00:00:00Z",
+  "relationships": [
+    {
+      "from": "example/entity1",
+      "to": "example/entity2", 
+      "relation": "works_at",
+      "since": "2026-01-01",
+      "source": "initial_setup"
+    }
+  ],
+  "behavioral_sequences": [
+    {
+      "id": "morning_routine",
+      "name": "Morning Startup Sequence",
+      "description": "Typical morning workflow pattern",
+      "sequence": [
+        "check_crypto",
+        "review_calendar",
+        "scan_emails",
+        "update_daily_notes"
+      ],
+      "confidence": 0.8,
+      "observations": 12,
+      "last_seen": "2026-02-13"
+    }
+  ],
+  "intent_predictions": {
+    "crypto_check": {
+      "triggers": ["morning", "market_hours", "before_calls"],
+      "next_likely": ["portfolio_review", "trading_decisions"],
+      "confidence": 0.9
+    },
+    "pre_call_research": {
+      "triggers": ["calendar_event_30min", "meeting_reminder"],
+      "next_likely": ["entity_lookup", "relationship_review", "context_preparation"],
+      "confidence": 0.85
+    }
+  },
+  "cross_reference_config": {
+    "entity_types": ["people", "companies", "projects", "tools", "hardware"],
+    "relationship_types": ["works_at", "knows", "uses", "manages", "leads", "founded", "mentions", "co_mentioned"],
+    "auto_scan_enabled": true,
+    "min_mention_length": 3
+  },
+  "memory_config": {
+    "salience_decay_days": 365,
+    "dedup_enabled": true,
+    "typing_auto_classify": true,
+    "pre_retrieval_filtering": true
+  }
+}
