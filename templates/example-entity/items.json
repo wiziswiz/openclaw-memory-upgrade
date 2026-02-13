@@ -1,0 +1,62 @@
+[
+  {
+    "id": "alex-001",
+    "fact": "Prefers video calls over phone calls for complex technical discussions",
+    "category": "preference",
+    "type": "communication",
+    "timestamp": "2026-01-15",
+    "source": "conversation",
+    "status": "active",
+    "supersededBy": null
+  },
+  {
+    "id": "alex-002", 
+    "fact": "Launched AI-powered customer insights dashboard that increased user engagement by 35%",
+    "category": "milestone",
+    "type": "achievement",
+    "timestamp": "2026-01-28",
+    "source": "linkedin_post",
+    "status": "active",
+    "supersededBy": null
+  },
+  {
+    "id": "alex-003",
+    "fact": "Works at TechFlow Inc as Senior Product Manager, promoted Q4 2025",
+    "category": "profile", 
+    "type": "role",
+    "timestamp": "2025-12-01",
+    "source": "conversation",
+    "status": "active",
+    "supersededBy": null
+  },
+  {
+    "id": "alex-004",
+    "fact": "Uses Notion for project documentation and Linear for sprint planning",
+    "category": "tool",
+    "type": "workflow",
+    "timestamp": "2026-02-05",
+    "source": "conversation", 
+    "status": "active",
+    "supersededBy": null
+  },
+  {
+    "id": "alex-005",
+    "fact": "Interested in exploring AI tooling partnerships for their platform",
+    "category": "opportunity",
+    "type": "business",
+    "timestamp": "2026-02-12",
+    "source": "conversation",
+    "status": "active", 
+    "supersededBy": null
+  },
+  {
+    "id": "alex-006",
+    "fact": "Speaking at ProductCon SF in March 2026 about AI integration patterns",
+    "category": "event",
+    "type": "speaking",
+    "timestamp": "2026-02-10",
+    "source": "conversation",
+    "status": "active",
+    "supersededBy": null
+  }
+]

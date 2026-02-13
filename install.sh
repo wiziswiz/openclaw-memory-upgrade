@@ -99,6 +99,19 @@ for dir in "${dirs[@]}"; do
     fi
 done
 
+# ── Create example entity (for format clarity) ─────────────────────────────
+example_entity_dir="$WORKSPACE/life/areas/people/example-user"
+if [ ! -d "$example_entity_dir" ]; then
+    if ! $DRY_RUN; then
+        mkdir -p "$example_entity_dir"
+        cp "$SCRIPT_DIR/templates/example-entity/summary.md" "$example_entity_dir/"
+        cp "$SCRIPT_DIR/templates/example-entity/items.json" "$example_entity_dir/"
+    fi
+    ok "Created example entity to show JSON structure format"
+else
+    info "Example entity already exists"
+fi
+
 # ── Copy scripts ───────────────────────────────────────────────────────────
 step "3" "Installing memory scripts"
 
@@ -111,6 +124,9 @@ scripts=(
     "cross-ref.py:Cross-referencing / Backlinks Graph"
     "auto-followup.py:Autonomous Follow-up Drafter"
     "correction-tracker.py:Correction Learning System"
+    "hybrid-search.py:Hybrid Search (vector 60% + keyword 40%)"
+    "extraction-pipeline.py:Extraction Pipeline Agent (auto-fact extraction)"
+    "memory-writer.py:Memory Writer (read/write separation)"
 )
 
 for entry in "${scripts[@]}"; do
@@ -147,6 +163,8 @@ create_state_file() {
 create_state_file ".memory-hashes.json" "{}"
 create_state_file ".tool-perf.json" '{"version":1,"calls":[]}'
 create_state_file ".corrections.json" '{"version":1,"corrections":[]}'
+create_state_file ".memory-write-queue.json" "[]"
+create_state_file ".last-extraction.json" '{"last_processed":"1970-01-01T00:00:00","last_run":"1970-01-01T00:00:00"}'
 create_state_file "pending-threads.json" '{"version":1,"threads":[]}'
 
 # Patterns file (larger template)
@@ -279,6 +297,7 @@ echo ""
 echo -e "  ${BOLD}Installed components:${NC}"
 echo -e "    ${CYAN}Phase 2:${NC} typing · dedup · pre-retrieval · tool-perf · salience · cross-refs"
 echo -e "    ${CYAN}Phase 3:${NC} time-aware heartbeats · auto follow-ups · corrections · intent prediction"
+echo -e "    ${CYAN}New v2:${NC} hybrid search · extraction pipeline · read/write separation"
 echo ""
 echo -e "  ${BOLD}Quick test:${NC}"
 echo -e "    ${DIM}cd $WORKSPACE${NC}"

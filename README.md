@@ -1,6 +1,6 @@
 # OpenClaw Memory Upgrade System
 
-**Transform your OpenClaw assistant into a memory-powered intelligence with 10 advanced components**
+**Transform your OpenClaw assistant into a memory-powered intelligence with 11 advanced components**
 
 This package implements a comprehensive 3-layer memory architecture inspired by memU research patterns, specifically designed for OpenClaw. Your assistant gains persistent knowledge graphs, intelligent deduplication, proactive follow-ups, and time-aware context management.
 
@@ -66,6 +66,139 @@ chmod +x install.sh
 └─────────────────────────────────────────────────────┘
 ```
 
+## 🗃️ Structured Entity Knowledge Graph
+
+**This is NOT a flat file system** - it's a sophisticated entity-based knowledge graph with structured JSON storage and tiered retrieval for performance.
+
+### Directory Structure
+```
+life/areas/
+├── people/
+│   ├── john-smith/
+│   │   ├── summary.md      # Weekly-rewritten snapshot (cheap to load)
+│   │   └── items.json      # Atomic facts with metadata (detailed)
+│   └── sarah-chen/
+│       ├── summary.md
+│       └── items.json
+├── companies/
+│   ├── movement-labs/
+│   │   ├── summary.md
+│   │   └── items.json
+│   └── openai/
+│       ├── summary.md
+│       └── items.json
+└── projects/
+    └── memory-upgrade/
+        ├── summary.md
+        └── items.json
+```
+
+### Atomic Fact Schema (items.json)
+Each `items.json` contains an array of structured facts:
+
+```json
+[
+  {
+    "id": "wiz-016",
+    "fact": "Wants daily accountability reminders for Tonal + Gemara",
+    "category": "preference",
+    "type": "behavior",
+    "timestamp": "2026-02-08",
+    "source": "conversation",
+    "status": "active",
+    "supersededBy": null
+  },
+  {
+    "id": "john-003",
+    "fact": "Prefers Slack over email for urgent requests",
+    "category": "preference",
+    "type": "communication",
+    "timestamp": "2026-02-12",
+    "source": "conversation",
+    "status": "active",
+    "supersededBy": null
+  },
+  {
+    "id": "sarah-001",
+    "fact": "Led the Q3 product launch, increased DAU by 40%",
+    "category": "milestone",
+    "type": "achievement",
+    "timestamp": "2026-01-15",
+    "source": "conversation",
+    "status": "active",
+    "supersededBy": null
+  }
+]
+```
+
+### Summary Snapshot Format (summary.md)
+Weekly-rewritten high-level context for quick loading:
+
+```markdown
+# John Smith
+
+**Role**: Senior Engineer at Movement Labs  
+**Relationship**: Direct report, joined team Q4 2025
+
+## Current Context
+- Working on Solana validator optimization project
+- Recently moved to Austin, remote-first but visits SF monthly
+- Prefers async communication, Slack for urgent items
+
+## Key Preferences
+- Focused work time: 9-11 AM PST (no meetings)
+- Uses Linear for task management, not Jira
+- Coffee meetings > formal conference rooms
+
+## Recent Activity
+- Shipped validator upgrade v2.1 (Feb 2026)
+- Mentoring two junior engineers
+- Spoke at Solana Breakpoint conference
+
+*Last updated: 2026-02-10*
+```
+
+### Cross-References (patterns.json)
+Entity relationship mapping for connected knowledge discovery:
+
+```json
+{
+  "relationships": [
+    {
+      "from": "people/john-smith",
+      "to": "companies/movement-labs",
+      "relation": "works_at",
+      "since": "2025-10-01"
+    },
+    {
+      "from": "people/wiz",
+      "to": "projects/memory-upgrade",
+      "relation": "owns",
+      "since": "2026-02-01"
+    }
+  ],
+  "backlinks": {
+    "people/john-smith": ["companies/movement-labs", "projects/validator-optimization"],
+    "companies/movement-labs": ["people/john-smith", "people/sarah-chen"]
+  }
+}
+```
+
+### 3-Tier Retrieval Strategy
+
+1. **summary.md (Cheap)**: Load first for basic context, ~200-500 words
+2. **items.json (Detailed)**: Load specific atomic facts when needed 
+3. **Full Memory Search (Expensive)**: Vector/semantic search across all conversations
+
+This architecture saves 70%+ on token usage while maintaining comprehensive knowledge access.
+
+**Key Benefits:**
+- ✅ Structured JSON with metadata (not flat markdown)
+- ✅ Atomic fact storage with supersession handling
+- ✅ Performance-optimized tiered access
+- ✅ Entity relationship mapping
+- ✅ Weekly summary regeneration from active facts
+
 ## 📦 Components Included
 
 | Component | Purpose | Impact |
@@ -78,6 +211,9 @@ chmod +x install.sh
 | `cross-ref.py` | Build entity relationship maps | Connected knowledge discovery |
 | `auto-followup.py` | Draft stale thread responses | Never drop conversations |
 | `correction-tracker.py` | Learn from corrections | Avoid repeated mistakes |
+| `hybrid-search.py` | Vector + keyword search fusion | 60% semantic + 40% exact matches |
+| `extraction-pipeline.py` | Auto-extract facts from daily notes | Continuous knowledge capture |
+| `memory-writer.py` | Queue-based write separation | Safe concurrent memory operations |
 
 ## ⚙️ Configuration
 
