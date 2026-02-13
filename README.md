@@ -6,17 +6,60 @@ This package implements a comprehensive 3-layer memory architecture inspired by 
 
 ## 🚀 Quick Start
 
+### Interactive Install (recommended)
 ```bash
-# One-line install (run from any directory)
-curl -fsSL https://raw.githubusercontent.com/your-repo/openclaw-memory-upgrade/main/install.sh | bash
+git clone https://github.com/wiziswiz/openclaw-memory-upgrade.git
+cd openclaw-memory-upgrade
+./install.sh
+# Walks you through each component — pick what you want, skip what you don't
 ```
 
-Or manual install:
+### Full Install
 ```bash
-git clone https://github.com/your-repo/openclaw-memory-upgrade.git
-cd openclaw-memory-upgrade
-chmod +x install.sh
-./install.sh
+./install.sh --all    # Everything, original behavior
+```
+
+### Cherry-Pick Mode
+```bash
+# Just want dedup + extraction? Grab only those:
+./install.sh --pick dedup,extraction
+
+# Want scripts but don't touch your AGENTS.md or HEARTBEAT.md?
+./install.sh --pick typing,dedup,crossref --skip-agents-append --skip-heartbeat-append
+```
+
+### Flags
+| Flag | What it does |
+|------|-------------|
+| `--all` | Install everything (no prompts) |
+| `--pick comp1,comp2` | Install only specific components |
+| `--dry-run` | Preview changes without writing |
+| `--skip-agents-append` | Don't modify AGENTS.md |
+| `--skip-heartbeat-append` | Don't modify HEARTBEAT.md |
+| `--skip-claude-mem` | Skip claude-mem plugin setup |
+| `--workspace DIR` | Target a specific directory |
+
+## 🍒 Cherry-Picking Components
+
+Don't need the full system? Here's what each component does and its dependencies:
+
+| Component | Script | Standalone? | Best for |
+|-----------|--------|-------------|----------|
+| **dedup** | `memory-dedup.py` | ✅ Yes | Preventing duplicate facts in entity files |
+| **typing** | `memory-typing.py` | ✅ Yes | Classifying facts by type (profile/event/etc) |
+| **extraction** | `extraction-pipeline.py` | ✅ Yes | Auto-extracting facts from conversations |
+| **preretrieval** | `pre-retrieval.sh` | ✅ Yes | Deciding if a query needs memory lookup |
+| **corrections** | `correction-tracker.py` | ✅ Yes | Learning from user corrections |
+| **salience** | `salience-decay.py` | Needs entities | Scoring facts by recency × frequency |
+| **crossref** | `cross-ref.py` | Needs entities | Building backlinks between entities |
+| **toolperf** | `tool-perf.py` | ✅ Yes | Tracking tool success/failure rates |
+| **followup** | `auto-followup.py` | Needs pending-threads.json | Drafting follow-ups for open threads |
+| **search** | `hybrid-search.py` | Needs entities | Vector + keyword search |
+| **writer** | `memory-writer.py` | ✅ Yes | Separating read/write memory paths |
+
+**Recommended starter pack** (3 scripts, no dependencies):
+```bash
+./install.sh --pick dedup,extraction,typing --skip-agents-append --skip-heartbeat-append
 ```
 
 ## ✨ What You Get
