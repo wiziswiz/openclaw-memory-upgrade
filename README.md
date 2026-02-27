@@ -276,7 +276,7 @@ This architecture saves 70%+ on token usage while maintaining comprehensive know
 
 ## 📄 Credits
 
-- **SME**: Structured Memory Engine by [Bryptobricks](https://github.com/Bryptobricks/Structured-Memory-Engine)
+- **SME (Structured Memory Engine)** by [Bryptobricks](https://github.com/Bryptobricks) — The search and recall engine that powers the recommended configuration. Auto-recall, 6-signal ranking, confidence decay, entity graphs, contradiction detection, and semantic embeddings. [github.com/Bryptobricks/Structured-Memory-Engine](https://github.com/Bryptobricks/Structured-Memory-Engine)
 - **memU Research**: Original intelligence patterns (https://github.com/NevaMind-AI/memU)
 - **claude-mem**: Vector memory foundation (https://github.com/thedotmack/claude-mem)
 - **OpenClaw Community**: Testing and feedback
