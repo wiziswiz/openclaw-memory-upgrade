@@ -26,6 +26,7 @@ SKIP_CLAUDE_MEM=false
 SKIP_AGENTS_APPEND=false
 SKIP_HEARTBEAT_APPEND=false
 SKIP_CRONS=false
+WITH_SME=false
 SELECTED_COMPONENTS=()
 
 usage() {
@@ -44,7 +45,8 @@ usage() {
     echo "  --skip-claude-mem       Skip claude-mem plugin setup"
     echo "  --skip-agents-append    Don't modify AGENTS.md"
     echo "  --skip-heartbeat-append Don't modify HEARTBEAT.md"
-    echo "  --skip-crons            Don't suggest cron jobs"
+    echo "  --with-sme              Install only SME-complementary components (skips search, salience, crossref)
+  --skip-crons            Don't suggest cron jobs"
     echo "  --help                  Show this help"
     echo ""
     echo "Components (for --pick):"
@@ -71,33 +73,39 @@ usage() {
 }
 
 # ── Component definitions ──
-declare -A COMPONENT_SCRIPTS=(
-    [typing]="memory-typing.py"
-    [dedup]="memory-dedup.py"
-    [preretrieval]="pre-retrieval.sh"
-    [toolperf]="tool-perf.py"
-    [salience]="salience-decay.py"
-    [crossref]="cross-ref.py"
-    [followup]="auto-followup.py"
-    [corrections]="correction-tracker.py"
-    [search]="hybrid-search.py"
-    [extraction]="extraction-pipeline.py"
-    [writer]="memory-writer.py"
-)
+get_script() {
+    case "$1" in
+        typing) echo "memory-typing.py" ;;
+        dedup) echo "memory-dedup.py" ;;
+        preretrieval) echo "pre-retrieval.sh" ;;
+        toolperf) echo "tool-perf.py" ;;
+        salience) echo "salience-decay.py" ;;
+        crossref) echo "cross-ref.py" ;;
+        followup) echo "auto-followup.py" ;;
+        corrections) echo "correction-tracker.py" ;;
+        search) echo "hybrid-search.py" ;;
+        extraction) echo "extraction-pipeline.py" ;;
+        writer) echo "memory-writer.py" ;;
+        *) echo "" ;;
+    esac
+}
 
-declare -A COMPONENT_DESCS=(
-    [typing]="Memory Typing — classifies facts as profile/event/knowledge/behavior/skill/tool"
-    [dedup]="Dedup Engine — SHA-256 content hashing to prevent duplicate facts"
-    [preretrieval]="Pre-retrieval Filter — decides if a query needs memory lookup"
-    [toolperf]="Tool Performance — tracks which tools succeed/fail and how long they take"
-    [salience]="Salience Decay — scores facts by recency × frequency"
-    [crossref]="Cross-references — builds backlinks between entities"
-    [followup]="Auto Follow-up — drafts follow-up messages for pending threads"
-    [corrections]="Correction Learning — tracks when the user corrects the assistant"
-    [search]="Hybrid Search — vector 60% + keyword 40% retrieval"
-    [extraction]="Extraction Pipeline — auto-extracts facts from conversations"
-    [writer]="Memory Writer — separates read/write paths for better concurrency"
-)
+get_desc() {
+    case "$1" in
+        typing) echo "Memory Typing — classifies facts as profile/event/knowledge/behavior/skill/tool" ;;
+        dedup) echo "Dedup Engine — SHA-256 content hashing to prevent duplicate facts" ;;
+        preretrieval) echo "Pre-retrieval Filter — decides if a query needs memory lookup" ;;
+        toolperf) echo "Tool Performance — tracks which tools succeed/fail and how long they take" ;;
+        salience) echo "Salience Decay — scores facts by recency × frequency" ;;
+        crossref) echo "Cross-references — builds backlinks between entities" ;;
+        followup) echo "Auto Follow-up — drafts follow-up messages for pending threads" ;;
+        corrections) echo "Correction Learning — tracks when the user corrects the assistant" ;;
+        search) echo "Hybrid Search — vector 60% + keyword 40% retrieval" ;;
+        extraction) echo "Extraction Pipeline — auto-extracts facts from conversations" ;;
+        writer) echo "Memory Writer — separates read/write paths for better concurrency" ;;
+        *) echo "Unknown component: $1" ;;
+    esac
+}
 
 # ── Parse args ──
 while [[ $# -gt 0 ]]; do
@@ -110,6 +118,7 @@ while [[ $# -gt 0 ]]; do
         --skip-agents-append) SKIP_AGENTS_APPEND=true; shift ;;
         --skip-heartbeat-append) SKIP_HEARTBEAT_APPEND=true; shift ;;
         --skip-crons) SKIP_CRONS=true; shift ;;
+        --with-sme) WITH_SME=true; INTERACTIVE=false; shift ;;
         --help) usage; exit 0 ;;
         *) echo "Unknown option: $1"; usage; exit 1 ;;
     esac
@@ -147,11 +156,11 @@ if $INTERACTIVE; then
     for comp in "${ALL_COMPONENTS[@]}"; do
         if $install_all_remaining; then
             SELECTED_COMPONENTS+=("$comp")
-            ok "${COMPONENT_DESCS[$comp]}"
+            ok "$(get_desc "$comp")"
             continue
         fi
         
-        echo -ne "  ${CYAN}${COMPONENT_DESCS[$comp]}${NC} [y/n/a] "
+        echo -ne "  ${CYAN}$(get_desc "$comp")${NC} [y/n/a] "
         read -r answer
         case "$answer" in
             y|Y) SELECTED_COMPONENTS+=("$comp") ;;
@@ -177,6 +186,11 @@ fi
 
 if $INSTALL_ALL; then
     SELECTED_COMPONENTS=(typing dedup preretrieval toolperf salience crossref followup corrections search extraction writer)
+fi
+
+if $WITH_SME; then
+    SELECTED_COMPONENTS=(typing dedup preretrieval toolperf followup corrections extraction writer)
+    echo -e "  ${CYAN}SME mode: skipping search, salience, crossref (handled by SME)${NC}"
 fi
 
 echo ""
@@ -208,7 +222,7 @@ echo -e "\n${PURPLE}${BOLD}[3]${NC} ${BOLD}Installing selected scripts${NC}"
 
 installed_count=0
 for comp in "${SELECTED_COMPONENTS[@]}"; do
-    file="${COMPONENT_SCRIPTS[$comp]:-}"
+    file=$(get_script "$comp")
     if [ -z "$file" ]; then
         warn "Unknown component: $comp"
         continue
@@ -223,7 +237,7 @@ for comp in "${SELECTED_COMPONENTS[@]}"; do
     fi
     
     $DRY_RUN || { cp "$src" "$dst"; chmod +x "$dst"; }
-    ok "${COMPONENT_DESCS[$comp]}"
+    ok "$(get_desc "$comp")"
     ((installed_count++))
 done
 
