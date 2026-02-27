@@ -90,6 +90,49 @@ Verify with `openclaw status` — you should see:
 │ Memory │ enabled (plugin memory-sme) │
 ```
 
+### Post-Install Tuning
+
+After installing SME, create a `.memory/config.json` in your workspace to tune behavior:
+
+```json
+{
+  "reflect": {
+    "decayRate": 1.0,
+    "halfLifeDays": 180,
+    "contradictionMinSharedTerms": 4,
+    "contradictionTemporalAwareness": true,
+    "contradictionRequireProximity": true
+  }
+}
+```
+
+- **`halfLifeDays`**: How fast memories fade. 365 (default) for slow decay, 90-180 for fast-moving workspaces.
+- **`contradictionTemporalAwareness`**: Treats "started X" → "stopped X" in later files as progression, not contradiction.
+- **`contradictionRequireProximity`**: Negation must be within 8 words of a shared term to flag.
+
+#### Resolving Contradictions
+
+When the reflect cycle detects contradictions:
+```bash
+# List unresolved contradictions
+node lib/index.js contradictions --unresolved
+
+# Keep newer chunk, downgrade older to "outdated" (confidence → 0.3)
+node lib/index.js resolve 42 --action keep-newer
+
+# Actions: keep-newer, keep-older, keep-both, dismiss
+```
+
+#### Auto-Capture Filtering
+
+If using SME's `autoCapture` with OpenClaw, the plugin automatically filters out:
+- Conversation metadata envelopes (timestamps, sender labels, reply context)
+- Recalled context blocks
+- System messages and cron heartbeats
+- Simple greetings and questions
+
+Only genuine decisions, preferences, and facts trigger auto-capture.
+
 ### What You Get with SME
 - **Auto-recall**: Relevant context injected before every agent turn — no manual searching
 - **Confidence scoring**: Facts decay over time, frequently-used ones get reinforced
