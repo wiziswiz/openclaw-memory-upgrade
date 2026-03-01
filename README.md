@@ -6,7 +6,7 @@ This package implements a comprehensive 3-layer memory architecture inspired by 
 
 ## 🔥 NEW: SME Integration (Recommended)
 
-**[Structured Memory Engine v6.4](https://github.com/Bryptobricks/Structured-Memory-Engine)** is now the recommended search and recall backend. See [upgrade guide](docs/UPGRADE-v6.md) for what's new. It replaces 3 of our 11 components with a unified engine that adds auto-recall, confidence scoring, entity graphs, and semantic embeddings — all local, zero API cost.
+**[Structured Memory Engine v6.4.1](https://github.com/Bryptobricks/Structured-Memory-Engine)** is now the recommended search and recall backend. See [upgrade guide](docs/UPGRADE-v6.md) for what's new. It replaces 3 of our 11 components with a unified engine that adds auto-recall, confidence scoring, entity graphs, and semantic embeddings — all local, zero API cost.
 
 **What SME replaces:**
 - `hybrid-search.py` → SME's 6-signal ranking (FTS + recency + confidence + type + file weight + entity overlap)

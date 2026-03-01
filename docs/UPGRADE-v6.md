@@ -1,8 +1,8 @@
-# Upgrading SME: v5.3 → v6.4
+# Upgrading SME: v5.3 → v6.4.1
 
 ## What's New
 
-SME v6.4.0 is a major quality-of-life upgrade. No breaking changes — just pull and go.
+SME v6.4.1 is a major quality-of-life upgrade. No breaking changes — just pull and go.
 
 ### New Modules
 | Module | What it does |
