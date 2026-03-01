@@ -43,6 +43,15 @@ function shouldCapture(text: string): string | null {
   if (/Cron:|scheduled reminder|handle this reminder/i.test(text)) return null;
   if (/inbound\/file_\d+---/i.test(text)) return null;
   if (/To send an image back/i.test(text)) return null;
+  // Telegram-specific metadata filters (prevent false positive captures)
+  if (/Conversation info \(untrusted metadata\)/i.test(text)) return null;
+  if (/Replied message \(untrusted/i.test(text)) return null;
+  if (/has_reply_context/i.test(text)) return null;
+  if (/sender_label/i.test(text)) return null;
+  if (/Forwarded message context/i.test(text)) return null;
+  // Strip quoted blocks before checking triggers — keywords in quotes shouldn't fire capture
+  const stripped = text.replace(/```[\s\S]*?```/g, '').replace(/> .+/gm, '').replace(/"body":\s*"[^"]*"/g, '');
+  if (stripped.trim().length < 20) return null;
 
   // Bug 5: Skip code blocks, CLI output, git hashes
   if ((text.match(/```/g) || []).length >= 2) return null;
@@ -56,7 +65,7 @@ function shouldCapture(text: string): string | null {
   if (/^(hi|hey|hello|thanks|ok|sure|got it|sounds good)/i.test(text.trim())) return null;
 
   for (const pattern of CAPTURE_TRIGGERS) {
-    if (pattern.test(text)) {
+    if (pattern.test(stripped)) {
       if (/\b(decided|decision|chose|going with|settled on)\b/i.test(text)) return "decision";
       if (/\b(prefer|always use|never use|switched to)\b/i.test(text)) return "pref";
       return "fact";

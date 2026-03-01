@@ -34,8 +34,8 @@
       },
       "autoCapture": {
         "type": "boolean",
-        "default": true,
-        "description": "Automatically capture decisions, preferences, and facts from user messages"
+        "default": false,
+        "description": "Auto-capture decisions/facts from messages. Recommended: false if agent writes manually (84% FP rate observed with Telegram metadata)."
       },
       "captureMaxChars": {
         "type": "number",

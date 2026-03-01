@@ -1,4 +1,4 @@
-# SME v6.4.1 Tuning Guide — Post-Audit Fixes
+# SME v6.5.0 Tuning Guide — Post-Audit Fixes
 
 **Date:** 2026-03-01  
 **Context:** After running parallel Codex + Opus audits on the full memory stack, we identified and fixed 8 issues. This guide documents what changed and why.
