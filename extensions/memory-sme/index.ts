@@ -94,12 +94,13 @@ const memoryPlugin = {
 
     // Auto-index on startup
     if (autoIndex) {
-      try {
-        const result = engine.index();
-        api.logger?.info?.(`memory-sme: indexed ${result.indexed} files (${result.total} total)`);
-      } catch (err: any) {
-        api.logger?.warn?.(`memory-sme: index failed: ${String(err)}`);
-      }
+      Promise.resolve(engine.index())
+        .then((result: any) => {
+          api.logger?.info?.(`memory-sme: indexed ${result?.indexed ?? 0} files (${result?.total ?? 0} total)`);
+        })
+        .catch((err: any) => {
+          api.logger?.warn?.(`memory-sme: index failed: ${String(err)}`);
+        });
     }
 
     api.logger?.info?.(`memory-sme: plugin registered (workspace: ${workspace}, autoRecall: ${autoRecall}, autoCapture: ${autoCapture})`);
@@ -165,7 +166,7 @@ const memoryPlugin = {
         ),
       }),
       async execute(_id: string, params: any) {
-        const result = engine.remember(params.content, {
+        const result = await engine.remember(params.content, {
           tag: params.tag ?? "fact",
         });
         return {
