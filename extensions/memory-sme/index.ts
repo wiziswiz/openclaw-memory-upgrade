@@ -130,7 +130,7 @@ const memoryPlugin = {
         ),
       }),
       async execute(_id: string, params: any) {
-        const results = engine.query(params.query, {
+        const results = await engine.query(params.query, {
           limit: params.limit ?? 10,
           since: params.since,
           type: params.type,
