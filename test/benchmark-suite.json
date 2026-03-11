@@ -1,0 +1,72 @@
+[
+  {
+    "id": "supplements-stack",
+    "query": "What supplements am I taking?",
+    "expectedContent": ["stack", "supplement"],
+    "expectedTypes": ["fact", "preference"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "portfolio-allocation",
+    "query": "How is my money allocated?",
+    "expectedContent": ["portfolio", "allocation"],
+    "expectedTypes": ["fact"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "person-lookup",
+    "query": "Who is Alex?",
+    "expectedContent": ["alex"],
+    "expectedTypes": ["fact"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "stale-relative",
+    "query": "What happened yesterday?",
+    "expectedContent": [],
+    "expectedTypes": [],
+    "minRelevantInTop3": 0
+  },
+  {
+    "id": "noise-suppression",
+    "query": "What are my current priorities?",
+    "expectedContent": ["priority", "focus", "goal"],
+    "expectedTypes": ["decision", "action_item", "fact"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "temporal-yesterday",
+    "query": "What did I do yesterday?",
+    "expectedContent": [],
+    "expectedTypes": [],
+    "minRelevantInTop3": 0
+  },
+  {
+    "id": "entity-lookup",
+    "query": "Tell me about the API gateway project",
+    "expectedContent": ["gateway", "api"],
+    "expectedTypes": ["fact"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "decision-recall",
+    "query": "What did I decide about the migration?",
+    "expectedContent": ["migration"],
+    "expectedTypes": ["decision"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "home-context",
+    "query": "What's going on at home?",
+    "expectedContent": ["home"],
+    "expectedTypes": ["fact"],
+    "minRelevantInTop3": 1
+  },
+  {
+    "id": "health-labs",
+    "query": "What do my latest labs show?",
+    "expectedContent": ["labs", "blood"],
+    "expectedTypes": ["fact"],
+    "minRelevantInTop3": 1
+  }
+]
