@@ -1,0 +1,67 @@
+{
+    "id": "memory-sme",
+    "kind": "memory",
+    "configSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "workspace": {
+                "type": "string",
+                "description": "SME workspace path (default: agent workspace)"
+            },
+            "fileTypeDefaults": {
+                "type": "object",
+                "description": "Map file patterns to chunk types"
+            },
+            "reflectInterval": {
+                "type": "string",
+                "description": "Auto-reflect interval (e.g. '6h', '12h')"
+            },
+            "autoIndex": {
+                "type": "boolean",
+                "default": true,
+                "description": "Index workspace on startup"
+            },
+            "autoRecall": {
+                "type": "boolean",
+                "default": true,
+                "description": "Automatically inject relevant memories before each agent turn"
+            },
+            "autoRecallMaxTokens": {
+                "type": "number",
+                "default": 1500,
+                "description": "Max tokens for auto-injected context"
+            },
+            "autoCapture": {
+                "type": "boolean",
+                "default": false,
+                "description": "Auto-capture decisions/facts from messages. Recommended: false if agent writes manually (84% FP rate observed with Telegram metadata)."
+            },
+            "captureMaxChars": {
+                "type": "number",
+                "default": 500,
+                "description": "Max characters per auto-captured memory"
+            },
+            "halfLifeDays": {
+                "type": "number",
+                "default": 120,
+                "description": "Memory decay half-life in days. Higher = memories stay relevant longer. Recommended: 180 for personal agents, 90 for fast-moving projects. (Upstream default: 120)"
+            },
+            "excludeFromRecall": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "File patterns to exclude from auto-recall injection (e.g. ['MEMORY.md', 'tmp/*'])"
+            },
+            "include": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Glob patterns for files to index (default: all markdown + JSON in workspace)"
+            },
+            "minConfidence": {
+                "type": "number",
+                "default": 0.0,
+                "description": "Minimum confidence score (0-1) for auto-recall results"
+            }
+        }
+    }
+}
