@@ -31,10 +31,14 @@ else
   missing+=("SME")
 fi
 
-# Layer 2: LCM
-if npm ls -g @martian-engineering/lossless-claw --depth=0 >/dev/null 2>&1; then
+# Layer 2: LCM — check OpenClaw extension path first, then global npm
+LCM_EXT_PATH="${HOME}/.openclaw/extensions/lossless-claw"
+if [ -d "$LCM_EXT_PATH" ] && [ -f "$LCM_EXT_PATH/package.json" ]; then
+  lcm_version=$(grep '"version"' "$LCM_EXT_PATH/package.json" | head -1 | sed 's/.*: *"\(.*\)".*/\1/')
+  ok "LCM installed as OpenClaw extension (v${lcm_version})"
+elif npm ls -g @martian-engineering/lossless-claw --depth=0 >/dev/null 2>&1; then
   lcm_version=$(npm ls -g @martian-engineering/lossless-claw --depth=0 2>/dev/null | grep lossless-claw | sed 's/.*@//' | tr -d '[:space:]')
-  ok "LCM installed (v${lcm_version})"
+  ok "LCM installed globally (v${lcm_version})"
 else
   fail "LCM not installed"
   warn "Run: npm install -g @martian-engineering/lossless-claw"
