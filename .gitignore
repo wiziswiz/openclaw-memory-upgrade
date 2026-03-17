@@ -4,3 +4,4 @@ node_modules/
 .env
 .pii-blocklist
 extensions/memory-sme/node_modules/
+extensions/*/node_modules/

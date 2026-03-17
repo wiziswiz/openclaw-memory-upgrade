@@ -94,6 +94,10 @@ Agent: "We decided on PostgreSQL on AWS. Sarah confirmed the parameters — pool
 
 **The difference:** The agent answered with specifics, citations, and confidence levels — without being asked to search. That context was auto-injected before the agent even started thinking.
 
+## Recommended Stack
+
+SME handles memory **between sessions**. For the full picture, pair it with **LCM** (within-session context preservation) and two **hooks** (compaction logger + tool result compressor) — both included in this repo. See **[RECOMMENDED-STACK.md](RECOMMENDED-STACK.md)** for the 3-layer setup guide, or run `./scripts/check-stack.sh` to verify your install.
+
 ## How It Works
 
 Every time your agent receives a message, SME runs a 6-step pipeline in <50ms:
