@@ -22,9 +22,13 @@ echo "  Layer 2: LCM (lossless-claw — within-session context preservation)"
 echo "  Layer 3: Hooks (compaction logger + tool result compressor)"
 echo ""
 
-# Check if LCM is already installed
-if npm ls -g @martian-engineering/lossless-claw --depth=0 >/dev/null 2>&1; then
-  printf "${GREEN}✅ LCM already installed${NC}\n"
+# Check if LCM is already installed (extension path or global)
+LCM_EXT_PATH="${HOME}/.openclaw/extensions/lossless-claw"
+if [ -d "$LCM_EXT_PATH" ] && [ -f "$LCM_EXT_PATH/package.json" ]; then
+  printf "${GREEN}✅ LCM already installed (OpenClaw extension)${NC}\n"
+  INSTALL_LCM="skip"
+elif npm ls -g @martian-engineering/lossless-claw --depth=0 >/dev/null 2>&1; then
+  printf "${GREEN}✅ LCM already installed (global npm)${NC}\n"
   INSTALL_LCM="skip"
 else
   printf "${YELLOW}LCM (lossless-claw) is not installed.${NC}\n"
@@ -42,12 +46,17 @@ fi
 
 if [ "$INSTALL_LCM" = "yes" ]; then
   echo ""
-  echo "Installing @martian-engineering/lossless-claw..."
-  npm install -g @martian-engineering/lossless-claw
+  echo "Installing @martian-engineering/lossless-claw via OpenClaw..."
+  if command -v openclaw &>/dev/null; then
+    openclaw plugin install @martian-engineering/lossless-claw
+  else
+    echo "openclaw CLI not found — falling back to npm global install"
+    npm install -g @martian-engineering/lossless-claw
+    echo ""
+    echo "Add to your openclaw.json plugins:"
+    echo '  "plugins": { "lossless-claw": { "spec": "@martian-engineering/lossless-claw" } }'
+  fi
   printf "${GREEN}✅ LCM installed${NC}\n"
-  echo ""
-  echo "Add to your openclaw.json plugins:"
-  echo '  "plugins": { "@martian-engineering/lossless-claw": {} }'
 fi
 
 # Hooks are already in the repo — just remind about config

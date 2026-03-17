@@ -30,16 +30,22 @@ SME handles *between* sessions. LCM handles *within* a session.
 
 ### Install
 
+The recommended way is via the OpenClaw CLI:
+
 ```bash
-npm install -g @martian-engineering/lossless-claw
+openclaw plugin install @martian-engineering/lossless-claw
 ```
 
-Then add to your `openclaw.json` plugins:
+This installs LCM as an OpenClaw extension (at `~/.openclaw/extensions/lossless-claw/`) and configures it automatically.
+
+Alternatively, add it manually to your `openclaw.json`:
 
 ```json
 {
   "plugins": {
-    "@martian-engineering/lossless-claw": {}
+    "lossless-claw": {
+      "spec": "@martian-engineering/lossless-claw"
+    }
   }
 }
 ```
