@@ -68,16 +68,15 @@ Strips ANSI codes, npm/pip warnings, box-drawing chars, and truncates oversized 
 
 ### Enable hooks
 
-Add to your `openclaw.json`:
+> ⚠️ **Do NOT manually paste hook entries into `openclaw.json`.** The gateway will crash with `MODULE_NOT_FOUND` if paths don't resolve. These extensions register automatically when properly installed. See [SETUP.md](SETUP.md) for the correct installation flow.
+>
+> If your gateway won't start after adding hook entries, run: `bash scripts/fix-openclaw-config.sh`
 
-```json
-{
-  "hooks": {
-    "session:compact:after": "./extensions/compaction-logger/index.js",
-    "tool_result_persist": "./extensions/tool-result-compressor/index.js"
-  }
-}
-```
+The extensions are in `extensions/` and integrate via OpenClaw's hook system. The correct hook keys are:
+- `session:compact:after` → `compaction-logger`
+- `tool_result_persist` → `tool-result-compressor`
+
+These must be registered under `hooks.internal.entries` (not at the top level of `openclaw.json`).
 
 ---
 
@@ -89,10 +88,8 @@ Add to your `openclaw.json`:
 # 2. Install LCM
 npm install -g @martian-engineering/lossless-claw
 
-# 3. Add to your openclaw.json:
-#    - Plugin: @martian-engineering/lossless-claw
-#    - Hooks: compaction-logger + tool-result-compressor
-#    (see examples above)
+# 3. Extensions register automatically — do NOT manually edit openclaw.json hooks
+#    See SETUP.md for proper installation
 
 # 4. Verify
 ./scripts/check-stack.sh

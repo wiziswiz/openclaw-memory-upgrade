@@ -15,15 +15,10 @@ Maintains a rolling window of the last 5 entries (oldest auto-pruned).
 
 ## Setup
 
-Add to your `openclaw.json` hooks:
+> ⚠️ **Do NOT paste this path directly into `openclaw.json`** — the gateway will crash if the path doesn't resolve from the config directory. This extension must be registered under `hooks.internal.entries` with the correct absolute or resolvable path. See [SETUP.md](../../SETUP.md) for proper installation.
 
-```json
-{
-  "hooks": {
-    "session:compact:after": "./extensions/compaction-logger/index.js"
-  }
-}
-```
+**Hook key:** `session:compact:after`
+**Entry path:** Must resolve to this extension's `index.js` from your OpenClaw config directory.
 
 ## Behavior
 

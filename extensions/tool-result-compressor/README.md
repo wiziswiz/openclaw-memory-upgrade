@@ -16,15 +16,10 @@ Strips noise from tool results before they persist to the conversation transcrip
 
 ## Setup
 
-Add to your `openclaw.json` hooks:
+> ⚠️ **Do NOT paste this path directly into `openclaw.json`** — the gateway will crash if the path doesn't resolve from the config directory. This extension must be registered under `hooks.internal.entries` with the correct absolute or resolvable path. See [SETUP.md](../../SETUP.md) for proper installation.
 
-```json
-{
-  "hooks": {
-    "tool_result_persist": "./extensions/tool-result-compressor/index.js"
-  }
-}
-```
+**Hook key:** `tool_result_persist`
+**Entry path:** Must resolve to this extension's `index.js` from your OpenClaw config directory.
 
 ## Behavior
 

@@ -1,0 +1,14 @@
+{
+  "_template_version": "2026-03-20",
+  "_notes": "Known-good OpenClaw hooks config for the memory upgrade stack. Do NOT manually add hook entries — plugins register their own hooks via 'openclaw plugins install'. Re-check against SETUP.md if copying this file after the template version date.",
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "session-memory": {
+          "enabled": true
+        }
+      }
+    }
+  }
+}
