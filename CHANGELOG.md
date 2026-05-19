@@ -2,6 +2,19 @@
 
 All notable changes to Structured Memory Engine will be documented in this file.
 
+## [10.1.0] - 2026-05-19
+
+### Upgraded
+- **SME upgraded to v10.1.0** — memory resilience, domain diversity, freshness watchdog, cross-file contradictions, recall strategy orchestrator
+- **lossless-claw install docs updated to v0.11.1** — deferred proactive compaction, search+expansion tools, focus brief generation
+
+### Fork patches re-applied
+- `lib/indexer.js`: `chunkJson()` for `items.json` knowledge graph indexing
+- `lib/indexer.js`: `discoverFiles()` walks `life/areas/` for entity files
+- `extensions/memory-sme/index.ts`: LCM hooks import + synchronous `register()`
+- `extensions/memory-sme/hooks/`: compaction-auto-logger, tool-result-compressor
+
+
 ## [7.0.0] - 2026-03-03
 
 ### Changed
